@@ -1,65 +1,379 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sk">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tomáš Moravčík</title>
-<meta name="description" content="Tomáš Moravčík — YouTube, Instagram, LinkedIn">
+<meta name="description" content="Tomáš Moravčík – construction scheduler. Experience, education and contact.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&display=swap" rel="stylesheet">
 <style>
-  :root { --fg: #111; --muted: #777; --line: #e5e5e5; --bg: #fff; }
-  @media (prefers-color-scheme: dark) {
-    :root { --fg: #f2f2f2; --muted: #8a8a8a; --line: #2a2a2a; --bg: #0c0c0c; }
+  :root {
+    --paper: #e9e9e6; --ink: #1d2023; --muted: #6a6e72; --rule: #d4d5d1;
+    --navy: #1f2d4d; --dark: #26292c; --dark-2: #2f3337; --on-dark: #e6e7e4; --on-dark-muted: #9a9ea2;
+    --wrap: 1080px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-  body {
-    background: var(--bg); color: var(--fg);
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    display: flex; align-items: center; justify-content: center;
-    padding: 32px 20px;
-    -webkit-font-smoothing: antialiased;
+  html { -webkit-text-size-adjust: 100%; background: var(--dark); }
+  body { background: var(--paper); color: var(--ink); font-family: "Archivo", system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variation-settings: "wdth" 100; -webkit-font-smoothing: antialiased; }
+  img { display: block; width: 100%; height: auto; }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
+
+  .top { display: flex; justify-content: flex-end; padding-top: 22px; }
+  .lang { display: flex; gap: 2px; font-size: 14px; }
+  .lang button { font: inherit; color: var(--muted); background: none; border: 0; padding: 4px 8px; cursor: pointer; border-radius: 4px; }
+  .lang button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+
+  .hero { display: grid; grid-template-columns: 1fr 300px; gap: 64px; align-items: end; padding: 64px 0 88px; }
+  h1 { font-size: clamp(52px, 9.5vw, 116px); line-height: .9; font-weight: 620; letter-spacing: -0.035em; font-variation-settings: "wdth" 112; }
+  .intro { margin-top: 32px; max-width: 28em; font-size: 20px; line-height: 1.45; }
+  .links { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 15px; }
+  .hero figure img { aspect-ratio: 3 / 4; object-fit: cover; }
+
+  .map { display: block; width: 100%; max-width: 360px; height: auto; margin-top: 36px; -webkit-mask-image: radial-gradient(ellipse 75% 75% at 45% 50%, #000 65%, transparent 100%); mask-image: radial-gradient(ellipse 75% 75% at 45% 50%, #000 65%, transparent 100%); }
+  .map .land { fill: #e1e1dd; stroke: #b3b6b8; stroke-width: 1; }
+  .map .home { fill: #d3d4d0; stroke: var(--ink); stroke-width: 1.2; }
+  .map .route { fill: none; stroke: var(--navy); stroke-width: 1.5; stroke-dasharray: 4 5; }
+  .map circle { fill: var(--navy); }
+  .map text { font: 500 30px "Archivo", sans-serif; fill: var(--ink); }
+
+  section { padding: 80px 0; border-top: 1px solid var(--rule); }
+  h2 { font-size: 30px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.1; font-variation-settings: "wdth" 108; margin-bottom: 48px; }
+
+  /* experience: one large block per job */
+  .job { display: grid; grid-template-columns: 220px 1fr; column-gap: 48px; padding: 44px 0 56px; border-top: 1px solid var(--rule); }
+  .job:first-of-type { border-top: 0; padding-top: 0; }
+  .job .side { padding-top: 6px; }
+  .yrs { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .now .yrs { color: var(--navy); font-weight: 600; }
+  .job h3 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; font-variation-settings: "wdth" 106; }
+  .job .org { margin-top: 6px; font-size: 17px; }
+  .job .before { margin-top: 4px; font-size: 15px; color: var(--muted); }
+  .job .project { margin-top: 18px; font-size: 15px; color: var(--muted); }
+  .did { list-style: none; margin-top: 22px; max-width: 38em; }
+  .did li { padding-left: 20px; position: relative; }
+  .did li + li { margin-top: 6px; }
+  .did li::before { content: ""; position: absolute; left: 0; top: .8em; width: 9px; border-top: 1.5px solid var(--muted); }
+  .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 32px; }
+  .photos .wide { grid-column: span 2; }
+  .photos .wide img { aspect-ratio: 4 / 3; object-fit: cover; }
+  .photos figure:not(.wide) img { aspect-ratio: 3 / 4; object-fit: cover; }
+  .photos .full { grid-column: 1 / -1; }
+  .photos .full img { aspect-ratio: 16 / 9; object-fit: cover; }
+  .photos.duo { grid-template-columns: 1.778fr 1fr; }
+  .duo .wide { grid-column: auto; }
+  .photos.six { grid-template-columns: repeat(6, 1fr); }
+  .six .wide { grid-column: span 3; }
+  .six figure:not(.wide) { grid-column: span 2; }
+  figcaption { margin-top: 8px; font-size: 13px; color: var(--muted); }
+
+  .logo { display: block; height: 30px; width: auto; margin-bottom: 18px; color: #8d9195; fill: currentColor; }
+  .logo .bg { fill: currentColor; }
+  .logo .fg, .logo .fg * { fill: var(--paper); }
+  .logo-reinoo { height: 17px; margin: 6px 0 24px; }
+  .logo-vut { height: 22px; margin-bottom: 14px; }
+
+  .alongside { display: grid; grid-template-columns: 220px 1fr; column-gap: 48px; padding-top: 40px; border-top: 1px solid var(--rule); }
+  .alongside h3 { font-size: 15px; font-weight: 600; padding-top: 2px; }
+  .alongside ul { list-style: none; }
+  .alongside li { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 16px; }
+  .alongside li:first-child { padding-top: 0; }
+  .alongside li span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 15px; }
+  .alongside li i { font-style: normal; color: var(--muted); }
+
+
+  .jobmap { display: block; width: 150px; height: auto; margin-top: 28px; }
+  .jobmap path { fill: #dcddd9; stroke: #9a9ea2; stroke-width: 1.5; }
+  .jobmap circle { fill: var(--navy); }
+  .jobmap text { font: 500 26px "Archivo", sans-serif; fill: var(--ink); }
+  .photos.trio { grid-template-columns: repeat(3, 1fr); }
+  .trio img { aspect-ratio: 3 / 4; object-fit: cover; }
+  .skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .skills h3 { font-size: 15px; font-weight: 600; color: var(--muted); margin-bottom: 14px; }
+  .skills .big { list-style: none; }
+  .skills .big li { font-size: clamp(19px, 2vw, 22px); line-height: 1.25; padding: 9px 0; border-top: 1px solid var(--rule); font-variation-settings: "wdth" 104; }
+  .skills .big li i { font-style: normal; color: var(--muted); font-size: 15px; margin-left: 6px; }
+  .tools { margin-top: 40px; font-size: 15px; color: var(--muted); display: grid; gap: 4px; }
+  .tools b { color: var(--ink); font-weight: 600; }
+
+  .study { display: grid; grid-template-columns: 1fr 360px; gap: 64px; align-items: start; }
+  .entry + .entry { margin-top: 30px; }
+  .entry .role { font-weight: 600; font-size: 18px; }
+  .entry .org, .entry .yrs { color: var(--muted); font-size: 15px; }
+  .entry p { margin-top: 6px; font-size: 15px; max-width: 34em; }
+  .study figure img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 40%; }
+
+  .outside { --rh: clamp(80px, 14vw, 210px); color: var(--on-dark); background: linear-gradient(var(--paper) calc(var(--rh) * .9), var(--dark) calc(var(--rh) * .9)); }
+  .ridge { display: block; width: 100%; height: var(--rh); }
+  .ridge .far { fill: var(--dark-2); }
+  .ridge .near { fill: var(--dark); }
+  .outside section { border-top: 0; padding-top: 24px; }
+  .outside p { max-width: 32em; font-size: 18px; }
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+  .three img { aspect-ratio: 3 / 4; object-fit: cover; }
+
+  footer { background: var(--dark); color: var(--on-dark); }
+  footer .inner { border-top: 1px solid #3a3e42; padding: 40px 0 60px; font-size: 15px; }
+  footer .links { margin-top: 0; }
+  footer small { display: block; margin-top: 24px; color: var(--on-dark-muted); font-size: 13px; }
+
+  html[lang="sk"] .en, html[lang="en"] .sk { display: none; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .map .route { stroke-dashoffset: 400; animation: fly 2.4s ease-out .4s forwards; }
+    @keyframes fly { to { stroke-dashoffset: 0; } }
   }
-  main { width: 100%; max-width: 360px; text-align: center; }
-  h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
-  p  { margin-top: 6px; font-size: 14px; color: var(--muted); }
-  nav { margin-top: 36px; display: flex; flex-direction: column; gap: 10px; }
-  a {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 14px 18px;
-    border: 1px solid var(--line); border-radius: 12px;
-    color: var(--fg); text-decoration: none;
-    font-size: 15px; font-weight: 500;
-    transition: border-color .15s, background .15s;
+
+  @media (max-width: 800px) {
+    body { font-size: 16px; }
+    .hero { grid-template-columns: 1fr; gap: 32px; padding: 32px 0 60px; }
+    .hero figure { order: -1; width: 68%; max-width: 300px; }
+    .intro { font-size: 18px; }
+    section { padding: 56px 0; }
+    h2 { font-size: 26px; margin-bottom: 32px; }
+    .job, .alongside { grid-template-columns: 1fr; }
+    .job .side { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; padding-top: 0; }
+    .job .side .logo { margin: 0; }
+    .photos, .photos.six { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .photos.duo { grid-template-columns: 1fr; }
+    .six .wide { grid-column: span 2; }
+    .six figure:not(.wide) { grid-column: span 1; }
+    .six figure:last-child { grid-column: span 2; }
+    .six figure:last-child img { aspect-ratio: 4 / 3; }
+    .alongside > div:first-child { display: none; }
+    .skills { grid-template-columns: 1fr; gap: 28px; }
+    .trio { gap: 6px; }
+    .jobmap { width: 90px; margin: 0 0 0 auto; }
+    .job .side .yrs { margin-left: 16px; }
+    .study { grid-template-columns: 1fr; gap: 32px; }
+    .study figure { width: 75%; max-width: 320px; }
+    .three { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .three figure:first-child { grid-column: 1 / -1; }
+    .three figure:first-child img { aspect-ratio: 4 / 3; }
   }
-  a:hover { border-color: var(--fg); }
-  svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
-  footer { margin-top: 40px; font-size: 12px; color: var(--muted); }
 </style>
 </head>
 <body>
-<main>
-  <h1>Tomáš Moravčík</h1>
-  <p>Construction scheduling · Skiing · Travel</p>
 
-  <nav>
-    <a href="https://www.youtube.com/@tomoravcik" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
-      YouTube
-    </a>
-    <a href="https://www.instagram.com/tomoravcik/" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 2c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.2.8-.4.3-.6.7-.8 1.2-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.2.3.4.7.6 1.2.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.2-.8.4-.3.6-.7.8-1.2.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2-.3-.4-.7-.6-1.2-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.7 4.7 0 1 1 0 9.4 4.7 4.7 0 0 1 0-9.4zm0 7.7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6-7.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0z"/></svg>
-      Instagram
-    </a>
-    <a href="https://www.linkedin.com/in/tomoravcik/" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.3V9h3.4v1.6h.1c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.5H3.5V9h3.6v11.5zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z"/></svg>
-      LinkedIn
-    </a>
-  </nav>
+<div class="wrap">
+  <div class="top">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set="sk" aria-pressed="true">SK</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
 
-  <footer>tomoravcik.com</footer>
+  <header class="hero">
+    <div>
+      <h1>Tomáš<br>Moravčík</h1>
+      <p class="intro">
+        <span class="sk">Stavebný inžinier zo Žiliny. Plánujem stavby a strážim ich termíny.</span>
+        <span class="en">Civil engineer from Žilina. I plan construction projects and keep them on schedule.</span>
+      </p>
+      <nav class="links" aria-label="Links">
+        <a href="https://www.linkedin.com/in/tom%C3%A1%C5%A1-morav%C4%8D%C3%ADk-28a118189/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:tomas.moravcik54@gmail.com">tomas.moravcik54@gmail.com</a>
+      </nav>
+    </div>
+    <figure>
+      <img src="portrait.jpg" width="825" height="1100" alt="Tomáš Moravčík">
+    </figure>
+  </header>
+</div>
+
+<main class="wrap">
+
+  <section aria-labelledby="h-exp">
+    <h2 id="h-exp"><span class="sk">Skúsenosti</span><span class="en">Experience</span></h2>
+
+    <article class="job now">
+      <div class="side">
+        <svg class="logo logo-marti" viewBox="0 0 120 120" role="img" aria-label="Marti"><path class="bg" d="M119.94,60A60,60,0,1,1,60,0H60a60,60,0,0,1,60,60h0"/><g class="fg"><path d="M39.86,99V41.5s-.25-6.41,5.89-6.930c5.9-.25,5.9,5.56,5.9,5.56V65.08H68.82V41.5s0-6.43,6.14-6.93c5.46-.44,5.38,5.56,5.38,5.56V65.08H97.770V34.57s.76-15.13-14.34-15.13a17.74,17.74,0,0,0-15.9,8.73s-1.86-8.73-13.07-8.73c-11.54,0-14.87,7.44-14.87,7.44V21H22.17V99H39.86"/><path d="M70.52,87.91c0-2.82,1.41-5.9,4.23-5.9H76V76.37H74.56c-2.130,0-3.36,1.23-4.24,4.09h0V76.52h-5.5V99h5.65V87.91"/><path d="M89.89,93.56c-.51,0-1.41.08-1.81.08A1.77,1.77,0,0,1,86,92.21a1.64,1.64,0,0,1,0-.73v-10h3.51V76.52H86V68.81H80.39v7.7H77.8v4.92h2.54v9.88c0,3.12.32,5.11,1.28,6.32h0c.89,1.13,2.39,1.57,4.78,1.57,1,0,2.44-.17,3.49-.21V93.56"/><rect x="92.07" y="68.9" width="5.7" height="4.9"/><path d="M50.32,92.54a2.82,2.82,0,0,1,2.35-2.82,13.3,13.3,0,0,0,3.51-1.22c.12,4.63-.76,6.62-3.49,6.62A2.24,2.24,0,0,1,50.31,93a3.09,3.09,0,0,1,0-.43m-4.23,5.060a5.55,5.55,0,0,0,4.53,2.05,7,7,0,0,0,5.18-2.09h0a7.24,7.24,0,0,0,.62-.73v.72h0A8.55,8.55,0,0,0,56.69,99h5.72A9.78,9.78,0,0,1,62,97.58h0a22.72,22.72,0,0,1-.28-4.36V83.34c0-6.36-4-7.54-8.1-7.54a9.38,9.38,0,0,0-5.53,1.57,7.4,7.4,0,0,0-2.7,6h5.31a2.82,2.82,0,0,1,2.82-2.82,2.5,2.5,0,0,1,2.75,2.23v.11A1.78,1.78,0,0,1,55,85.06l-.14,0c-4,1-10.110.48-10.11,7.79a7.48,7.48,0,0,0,1.41,4.75"/><rect x="92.07" y="76.52" width="5.7" height="22.46"/></g></svg>
+        <div class="yrs"><span class="sk">02/2025 – teraz</span><span class="en">02/2025 – now</span></div>
+        <svg class="jobmap" viewBox="0 0 300 210" role="img" aria-label="Keflavík"><path d="M240.3,28.3L243.3,28.6L248.2,26.4L250.2,24.9L255.2,19.8L258.2,18.4L262.8,18.7L264.9,18.4L265,18.9L262.2,21L260,21.6L256.7,24.7L253.7,31.6L251.4,35L251.5,36.4L254.2,39.1L257.2,40.5L260,39.2L261.2,39.8L262.3,41.7L262.9,43.7L263.1,45.5L262.5,49.5L260.9,53.6L258.7,56.9L258.9,58L260.7,58.6L269.3,56.4L270.3,56.5L270.7,57.6L270.8,59.7L271.3,61.4L272.1,63.1L271.9,64.7L268.1,70L272.6,66.7L276.1,65.7L282.2,67.3L284.6,69.3L286,72.6L288.2,71.5L289,71.6L290.4,73.5L290.4,75.4L289.5,78.4L289.1,81L288.1,82L286.1,82.8L285.5,83.8L286.4,85.7L287.7,87.7L289.5,87.8L289.8,88.7L289.8,89.8L289.6,91.1L289,92L288.1,92.4L286.8,93.8L291.3,96.9L291.9,98L292,99.7L291.6,101.5L290.9,103.5L289.5,104.6L286.3,104.9L284.2,106.1L284.9,108.3L284.9,111.1L284.3,114.1L281.7,119L279.3,121.6L276.9,123.1L272.7,122.6L270.5,121.3L270.7,125.5L268.3,128L268.8,130.1L269.6,131.2L269.2,133.9L268.1,136.6L266.2,139.5L264.1,141.2L259.9,143.4L256.3,147.1L253.9,148.5L247.8,148.4L241.5,150.7L232.8,155.6L226.8,159.5L222.3,164L216.2,171.1L211.8,174.2L209.2,174.9L204.2,175.6L200,177.5L185.9,181.1L181.2,183L180.6,184.9L178.6,187.6L178.5,188.5L179.4,189.4L179.5,190.3L177.8,193.5L174.3,195.7L172.7,195.7L170.7,193.7L169.8,193.8L169.5,194.1L169.5,194.7L170.6,197.2L168.5,198.2L159.4,201L143.9,199L137.8,196.8L130.2,193.4L125.6,192.5L119.2,192.3L114,187.5L111.6,184.6L111.4,183.4L111.7,181.9L112.1,181L113,180.5L114.7,180.5L114.9,180L113.6,177.6L112.3,178.5L108.9,181.8L107.4,181.6L105.5,180L105.4,178.4L101.5,177.7L98.2,175.7L94.8,172.8L94.3,171.7L95.9,170L95.6,169.7L94.4,169.4L92,169.9L88.3,173.6L86.7,174.6L62.7,175.4L56.6,175.8L55.4,176.3L54.4,173.9L53.4,168.5L53,165L53.3,163.3L54.2,161.2L55.5,161.6L56.7,163.1L57.8,165.5L59.1,166.7L67.5,163.8L70.9,161.9L72.3,160L74,157L75.9,155.4L76.7,153.9L78.4,149.2L79.6,147L80.9,145.3L82.6,144.3L86.4,143.5L83.8,142.4L81.6,142.4L73.6,147.4L71,147.4L71.1,146.7L72.2,145.2L75,142.7L73.1,142.6L72.3,141.4L72.2,139.1L73.6,135.3L80.1,130.3L82.3,129.6L83,128.5L82.2,127.8L80.8,127.3L74.3,132.4L69.6,134.2L68.2,133.9L65.8,131.9L65,131L63.9,128.6L64.1,127.3L66.3,123.3L66,122.4L64.4,122.1L60.2,118.3L53.6,118.7L37.3,116.5L33.9,117.4L28.4,120.6L25,121.7L23.5,121L22.1,119.3L20.8,117L19.7,114.1L20.2,112.1L22.3,110.9L23.9,110.4L28.3,111.1L33.8,109L37.2,108.6L38.2,108.3L40.2,106.1L41.2,105.6L42.7,106.4L43.5,107.9L49,105.5L50.9,104.4L51.1,103.7L51.9,102.8L54.5,104.1L56.8,104.1L59.5,103.3L64.4,102.9L75.1,102.7L76.8,100.8L77.6,99.2L78.5,95L78.1,94.1L71.3,98L69.8,97.9L61.9,95.9L59.1,93.6L60.1,91.7L64.2,87.7L68.5,84.4L74.8,81L76.3,79.5L76.4,77.9L72.2,75.1L64.3,75.9L62.2,72.5L55.7,70.4L51.3,71.7L48.9,69.6L43.2,72.5L30.7,76.6L25.6,79.5L23,80.4L19.9,78.1L14.6,75.4L8.6,74.7L8,73.1L11.5,68.3L13.9,67.5L16.3,67.9L20.9,71.2L24.1,72.3L20.1,67.3L20.2,65.5L19.9,62.6L18.7,61.4L17.5,58.2L17.9,57.3L19.5,56.8L22.7,57.9L30.4,63.4L34.1,62.4L36.2,60.4L38.9,58.9L38.2,58.1L31.6,58L28,56.9L26.3,55.4L24.7,52.6L25.2,51.4L27.1,50.3L32.7,50.6L29,45.9L26.4,43.2L26.2,41.9L26.4,40.2L26.6,39.1L27.2,38.5L33.7,41.3L35.1,41.4L33.8,39.7L30.9,37L30.8,36L32,35.2L32.5,33.6L32.6,32.4L34.6,31.4L36.6,31.3L38.5,32.3L44.7,37.4L45.6,38.9L45.9,40.8L45.6,43.2L45.8,44.1L48.3,43.3L50.2,44.3L51.2,44.1L53.6,40.5L55.2,41.3L56.2,43L56.5,44.5L56.7,46.5L56.2,50.9L56.3,51.4L58,49L60.9,48.9L61.3,47.6L61.4,43.1L61.1,39.3L60.8,38.5L51.4,33.2L49.8,32L47.7,29.3L48.2,28L49.9,26.8L52.8,26.4L59.1,26.5L59.8,25.9L58.6,24.5L55.6,23.6L54.9,22.8L54.5,21.2L51,22.1L47,22.1L43.3,21.2L43.2,20L44.7,18.3L47.8,15.3L49.2,14.5L53.5,15.1L57.8,14.2L61.3,15.2L64,18.2L67.9,23.2L73.3,26.5L73.7,27.5L76.5,30.2L82.2,37.2L87.8,41.3L88.1,42.4L87.1,43.7L85,45.1L85.4,45.9L88.3,46.9L90.3,49.6L90.5,50.9L88.6,59.5L87.7,61.2L86.5,62.2L81.2,60.5L82.5,63.3L86.3,66.1L87.1,67.8L86.6,69.3L86.9,69.7L88.3,68.9L88.9,69.7L88.6,72.4L88.1,74.5L87.1,76.3L87.4,77L88.9,76.8L90.2,77.3L92.4,79.7L94.1,86.9L95,89.2L95.6,87.1L96.4,81.8L97.1,79.1L97.8,79L98.5,78.1L98.9,76.5L100,70.5L103.5,66L105.2,64.7L106.7,64.4L107.5,64.9L110.2,69.6L111.7,70.4L112.6,70.2L113.7,67L115.1,60.9L115.4,53.9L114.7,46.3L115.1,40.9L116.8,37.5L119,36.5L121.7,37.9L123.7,39.9L127.7,47.4L130.9,51.4L133.6,55.7L135,57L137.7,57.8L138.3,57.5L138.9,56.5L139.1,54.8L138.5,44L139.3,40.5L140.4,38.1L145.4,36.8L148,35.2L150.6,32.7L152.7,31.4L154.4,31.2L156.2,32.2L158,34.3L160.9,38.4L164.6,45.2L169.2,50.3L171.7,58.4L172.1,59.8L172.7,59.9L173.4,58.9L173.7,57.4L173.8,53.8L172.5,49.1L168.2,37L168.1,34.8L168.7,32.9L171.8,32.7L178.8,33.8L181.1,35.6L185.9,43L187.3,44.8L188.1,45.3L188.4,44.3L190.3,43L191.5,41.3L193.7,37.3L198.5,30L199.4,29.7L200.8,30.3L203.2,32.3L204.4,33.8L206.6,35L208.9,34.5L212.2,32L215.8,30.4L217.1,26.8L217.3,25.1L214.4,14.2L215.6,11.9L222,9.2L227.5,9L228.8,9.8L232.4,15.1L234.7,17.7L235.9,19.8L236.2,24.6L237.6,26.4Z"/><circle cx="56.8" cy="167.9" r="7"/><text x="70.8" y="175.9">Keflavík</text></svg>
+      </div>
+      <div>
+        <h3><span class="sk">Manažér harmonogramu</span><span class="en">Schedule Manager</span></h3>
+        <div class="org">Marti Group (ÍAV), Keflavík</div>
+        <p class="project"><span class="sk">Projekt DABS, letecká základňa Keflavík, investor NAVFAC</span><span class="en">DABS project, Keflavík Air Base, client NAVFAC</span></p>
+        <ul class="did">
+          <li><span class="sk">Vediem hlavný harmonogram stavby v MS Project a 4-týždňový plán prác</span><span class="en">I run the master schedule in MS Project and the 4-week lookahead</span></li>
+          <li><span class="sk">Mesačný earned value, fakturácia a reporting pre investora</span><span class="en">Monthly earned value, invoicing and reporting to the client</span></li>
+          <li><span class="sk">Analýzy oneskorení a dopad zmien na termíny</span><span class="en">Delay analysis and the effect of changes on the programme</span></li>
+          <li><span class="sk">Priamo na stavbe som mal na starosti montáž oceľovej konštrukcie</span><span class="en">On site, I was in charge of erecting the steel structure</span></li>
+          <li><span class="sk">Koordinácia prác na stavbe a kontrola kvality prác a dodávok</span><span class="en">Coordinating site work and checking the quality of works and deliveries</span></li>
+        </ul>
+        <div class="photos duo">
+          <figure class="wide"><img src="dabs-render.jpg" width="1600" height="900" loading="lazy" alt=""><figcaption><span class="sk">Vizualizácia projektu (NAVFAC)</span><span class="en">Project rendering (NAVFAC)</span></figcaption></figure>
+          <figure><img src="iav.jpg" width="825" height="1100" loading="lazy" alt=""><figcaption><span class="sk">Na stavbe</span><span class="en">On site</span></figcaption></figure>
+        </div>
+      </div>
+    </article>
+
+    <article class="job">
+      <div class="side">
+        <svg class="logo logo-reinoo" viewBox="0 0 358 78" role="img" aria-label="Reinoo"><g fill-rule="evenodd"><path transform="translate(151.478 9.906)" d="M162.01,24.136h29.509V53.643H162.01V24.136Zm14.754,43.977a29.226,29.226,0,1,0-20.676-8.551,29.163,29.163,0,0,0,20.676,8.551"/><path transform="translate(114.982 9.905)" d="M141.23,22.663a16.225,16.225,0,1,1-16.224,16.224A16.242,16.242,0,0,1,141.23,22.663m0,45.463a29.239,29.239,0,1,0-29.239-29.239A29.275,29.275,0,0,0,141.23,68.126"/><path transform="translate(82.071 11.652)" d="M93.991,32.078l21.44-9.11v40.8h14.053V11.349H111.824L93.991,18.643V11.349H79.936V63.766H93.991Z"/><path transform="translate(57.193 11.662)" d="M78.974,11.359H64.918V51.242H55.7V63.733H88.187V51.242H78.974Z"/><rect transform="translate(122.111)" width="14.055" height="14.055"/><path transform="translate(0 9.941)" d="M14.055,19.024V13.059H0V65.48H14.055V32.759L40.048,21.626,36.2,9.683Z"/><path transform="translate(24.238 11.361)" d="M38.739,33.5H60.918V22.633a60.193,60.193,0,0,0-10.6-.166c-6.546.472-10.981,4.661-11.581,11.037M72.046,12.382v31.2H38.8c.008.024,1.631,6.733,9.734,8.33,8.978,1.771,19.045.7,23.51-.008V63.811a94.752,94.752,0,0,1-14.371,1.066c-9.365,0-17.772-.726-25.07-6.712-6.708-5.507-9-12.14-9-20.283,0-13.013,6.627-20.968,16.58-24.515,8.366-2.983,19.288-2.791,31.858-.985"/></g></svg>
+        <div class="yrs">2022 – 02/2025</div>
+        <svg class="jobmap" viewBox="0 0 300 150" role="img" aria-label="Žilina"><path d="M286.8,46.9L286.1,50L284.2,53.4L281.7,57.1L279.6,61.4L276.9,70.9L275.1,75.3L267.7,83.8L267.1,95.6L266.1,96.5L249.6,100.6L247.4,99.9L245.1,97.7L243.9,95.9L243,94.8L241.6,91.5L239.7,89.1L236.9,87.2L234.3,85L231,84.9L222,88.1L215.8,88.3L211.8,87.3L206.2,85.4L195.5,85.2L188,86.8L187.3,89.1L180.5,103.6L170.7,109L162,114.4L159.5,115.5L155.2,113.8L150.3,110.6L146.4,108.9L143.4,109.6L140.1,113.3L138.7,117L129,119.8L112,121.3L106.1,124.9L104.2,129.4L104,132.7L105.6,135.5L103.7,138.9L103,140.3L91,141L75,142L65.5,141.8L56.5,141.5L50.4,138.6L42.9,133L35.1,125.7L34.2,125.4L33.2,124.7L28.2,124.2L27,124.5L24,122.2L23.1,119L18.4,110.7L13.2,97L13.2,93L15.1,88.6L17.1,85L17.2,82.4L17.6,81.6L19.1,75.9L22.8,68.3L26.3,63.9L28.9,62.5L34.1,63.7L43.1,64.9L49.9,63.9L56.3,60.4L59.8,57.5L62.9,54.3L63.7,52.3L65.1,51.4L70.5,49.6L72.1,47.4L72.8,43.5L73.3,39L74.3,35.7L75.7,33.2L85.6,27.4L86.5,25.4L88,23.3L91,21.1L93.8,17.9L96.7,16L100.5,16.1L104.2,15.7L107,14.6L108.2,14.5L113.2,15.5L114.1,19.1L114.6,22.9L123.4,22.7L128.3,14.5L130.7,13.4L134.9,10.6L137.5,8L139.2,9.7L142,15L144.8,19.2L146.4,20.9L146.5,22.2L148.3,22.9L151.4,23.5L153.5,24.7L154.2,28.7L154.2,32.3L153.1,34.9L152.6,37.2L154.9,38.1L158.2,37.2L160.4,35.9L167.2,38.9L169.6,32.3L172.2,28.9L175.9,27.3L179,25.3L181.9,23.8L183.8,23.8L184.7,23.3L187.3,23.5L190.1,24.1L194.1,23.3L199.5,25L202.9,28L206.2,29L210,28.9L212.7,27.2L216.5,21.4L219.2,21.4L223.4,20.5L229.5,20.6L243.4,21.8L247,24.1L255.5,26.9L259.3,30.1L260.9,34.1L261.8,36.8L270.6,40.9L283.6,46.3Z"/><circle cx="103.7" cy="36" r="7"/><text x="117.7" y="44">Žilina</text></svg>
+      </div>
+      <div>
+        <h3><span class="sk">Asistent projektového manažéra</span><span class="en">Assistant project manager</span></h3>
+        <div class="org">Reinoo a.s., Žilina</div>
+        <p class="project"><span class="sk">Kancelárska budova Nordcity Obchodná v Žiline</span><span class="en">Nordcity Obchodná office building in Žilina</span></p>
+        <ul class="did">
+          <li><span class="sk">Mal som na starosti certifikáciu LEED a WELL na úrovni Platinum, teda tej najvyššej</span><span class="en">I was in charge of the LEED and WELL certification at Platinum, the highest level</span></li>
+          <li><span class="sk">Výber dodávateľov, cenové ponuky a komunikácia s nimi</span><span class="en">Choosing suppliers, collecting quotes, supplier communication</span></li>
+          <li><span class="sk">Kontrola výstavby a termínov s hlavným projektovým manažérom</span><span class="en">Monitoring construction and the programme with the lead project manager</span></li>
+          <li><span class="sk">Analýzy investičných príležitostí pre nové projekty</span><span class="en">Analysing investment opportunities for new projects</span></li>
+        </ul>
+        <div class="photos trio">
+          <figure><img src="nc-corner.jpg" width="825" height="1100" loading="lazy" alt=""></figure>
+          <figure><img src="nc-lobby.jpg" width="1400" height="1050" loading="lazy" alt=""></figure>
+          <figure><img src="nc-roof.jpg" width="825" height="1100" loading="lazy" alt=""></figure>
+        </div>
+      </div>
+    </article>
+
+    <div class="alongside">
+      <div></div>
+      <ul>
+        <li><span><span class="sk">Inštruktor lyžovania</span><span class="en">Ski instructor</span> <i>RAW Vrátna</i></span><span>2019 – 2023</span></li>
+        <li><span><span class="sk">Tréner atletiky</span><span class="en">Athletics coach</span> <i>ŠK Juventa Žilina</i></span><span>2018 – 2023</span></li>
+        <li><span><span class="sk">Vedúci letných táborov</span><span class="en">Summer camp leader</span></span><span>2017 – 2024</span></li>
+        <li><span><span class="sk">Sprievodca</span><span class="en">Tourist guide</span> <i><span class="sk">Hrad Strečno</span><span class="en">Strečno Castle</span></i></span><span>2019</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-skills">
+    <h2 id="h-skills"><span class="sk">Nástroje a jazyky</span><span class="en">Tools and languages</span></h2>
+    <div class="skills">
+      <div>
+        <h3><span class="sk">Programy</span><span class="en">Software</span></h3>
+        <ul class="big">
+          <li>MS Project</li><li>Excel</li><li>Trimble Connect</li><li>Dalux</li><li>Bexel Manager</li><li>AutoCAD</li>
+        </ul>
+      </div>
+      <div>
+        <h3><span class="sk">Viem robiť</span><span class="en">What I do</span></h3>
+        <ul class="big">
+          <li><span class="sk">Harmonogramy stavieb</span><span class="en">Construction schedules</span></li>
+          <li>Earned value</li>
+          <li><span class="sk">Analýzy oneskorení</span><span class="en">Delay analysis</span></li>
+          <li><span class="sk">Certifikácia LEED a WELL</span><span class="en">LEED and WELL certification</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3><span class="sk">Jazyky</span><span class="en">Languages</span></h3>
+        <ul class="big">
+          <li><span class="sk">Slovenčina</span><span class="en">Slovak</span> <i><span class="sk">rodný jazyk</span><span class="en">native</span></i></li>
+          <li><span class="sk">Angličtina</span><span class="en">English</span> <i>C1</i></li>
+          <li><span class="sk">Nemčina</span><span class="en">German</span> <i>A2</i></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-edu">
+    <h2 id="h-edu"><span class="sk">Štúdium</span><span class="en">Education</span></h2>
+    <div class="study">
+      <div>
+        <div class="entry">
+          <svg class="logo logo-vut" viewBox="0 0 110 110" role="img" aria-label="VUT"><path class="bg" d="M0 110h110V0H0z"/><path class="fg" d="M91.617 29.089h-40.17V16.75H17.599v12.34h33.847v62.154h12.729V48.283a8.2 8.2 0 0 1 8.46-7.906h18.982V29.089z"/></svg>
+          <div class="role"><span class="sk">Ing., Stavebné inžinierstvo – manažment stavebníctva</span><span class="en">MSc, Civil Engineering – Management in the Building Industry</span></div>
+          <div class="org"><span class="sk">VUT v Brne, Fakulta stavebná</span><span class="en">Brno University of Technology, Faculty of Civil Engineering</span></div>
+          <div class="yrs">2024 – 2027</div>
+          <p>
+            <span class="sk">Diplomová práca: Využití BIM v řízení projektů.</span>
+            <span class="en">Thesis: Using BIM in project management.</span>
+          </p>
+        </div>
+        <div class="entry">
+          <div class="role"><span class="sk">Bc., Stavebné inžinierstvo</span><span class="en">BSc, Civil Engineering</span></div>
+          <div class="org"><span class="sk">Špecializácia E – Manažment stavebníctva</span><span class="en">Specialisation E – Management in the Building Industry</span></div>
+          <div class="org"><span class="sk">VUT v Brne, Fakulta stavebná</span><span class="en">Brno University of Technology, Faculty of Civil Engineering</span></div>
+          <div class="yrs">2020 – 2024</div>
+          <p>
+            <span class="sk">Bakalárska práca: Aplikácia moderných nástrojov projektového riadenia. Získala Cenu dekana fakulty a 3. miesto v súťaži SVOČ 2024.</span>
+            <span class="en">Bachelor’s thesis: Applying modern project management tools. It won the Dean’s Award and 3rd place in the SVOČ 2024 student competition.</span>
+          </p>
+        </div>
+        <div class="entry">
+          <div class="role">IPMA Level D</div>
+          <div class="org"><span class="sk">Certifikát projektového manažmentu</span><span class="en">Project management certification</span></div>
+        </div>
+        <div class="entry">
+          <div class="role"><span class="sk">Gymnázium Varšavská cesta</span><span class="en">Gymnázium Varšavská cesta (secondary school)</span></div>
+          <div class="org">Žilina</div>
+          <div class="yrs">2012 – 2020</div>
+        </div>
+      </div>
+      <figure>
+        <img src="vut.jpg" width="880" height="1100" loading="lazy" alt="">
+        <figcaption><span class="sk">Po obhajobe bakalárskej práce, Brno</span><span class="en">After my bachelor’s defence, Brno</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+
+
 </main>
+
+<div class="outside">
+  <svg class="ridge" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
+    <path class="far" d="M0 180 L0 127 L16 121 L32 121 L48 111 L64 112 L80 106 L96 98 L112 98 L128 89 L144 89 L160 81 L176 77 L192 82 L208 91 L224 87 L240 87 L256 90 L272 93 L288 88 L304 86 L320 91 L336 81 L352 88 L368 82 L384 79 L400 78 L416 80 L432 84 L448 75 L464 74 L480 69 L496 61 L512 58 L528 53 L544 58 L560 65 L576 70 L592 67 L608 67 L624 70 L640 69 L656 67 L672 72 L688 72 L704 68 L720 71 L736 71 L752 75 L768 75 L784 75 L800 87 L816 82 L832 86 L848 89 L864 82 L880 85 L896 79 L912 85 L928 85 L944 83 L960 85 L976 74 L992 72 L1008 66 L1024 60 L1040 53 L1056 52 L1072 47 L1088 42 L1104 50 L1120 46 L1136 52 L1152 52 L1168 55 L1184 54 L1200 48 L1216 49 L1232 52 L1248 46 L1264 50 L1280 47 L1296 47 L1312 46 L1328 54 L1344 57 L1360 69 L1376 81 L1392 97 L1408 97 L1424 107 L1440 113 L1440 180 Z"/>
+    <path class="near" d="M0 180 L0 147 L16 143 L32 141 L48 129 L64 130 L80 132 L96 143 L112 146 L128 132 L144 129 L160 127 L176 124 L192 125 L208 123 L224 115 L240 109 L256 112 L272 106 L288 102 L304 101 L320 92 L336 85 L352 87 L368 87 L384 78 L400 90 L416 88 L432 90 L448 88 L464 81 L480 80 L496 80 L512 92 L528 88 L544 92 L560 94 L576 91 L592 92 L608 86 L624 77 L640 71 L656 62 L672 57 L688 44 L704 63 L720 67 L736 63 L752 66 L768 70 L784 72 L800 71 L816 83 L832 87 L848 82 L864 85 L880 81 L896 83 L912 97 L928 100 L944 108 L960 99 L976 97 L992 110 L1008 104 L1024 98 L1040 104 L1056 96 L1072 103 L1088 106 L1104 98 L1120 90 L1136 77 L1152 74 L1168 77 L1184 92 L1200 93 L1216 99 L1232 95 L1248 95 L1264 106 L1280 111 L1296 111 L1312 113 L1328 115 L1344 117 L1360 112 L1376 118 L1392 118 L1408 118 L1424 122 L1440 129 L1440 180 Z"/>
+  </svg>
+  <div class="wrap">
+    <section aria-labelledby="h-me">
+    <h2 id="h-me"><span class="sk">Mimo práce</span><span class="en">Outside work</span></h2>
+    <p>
+      <span class="sk">Najradšej som vonku. V zime na lyžiach a skialpoch, v lete behám a chodím na ferraty. Z ciest natáčam videá.</span>
+      <span class="en">I like being outdoors most. Skiing and ski touring in winter, running and via ferratas in summer. I film my trips.</span>
+    </p>
+    <nav class="links" aria-label="Social">
+      <a href="https://www.youtube.com/@tomoravcik" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.instagram.com/tomoravcik/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+    <div class="three">
+      <figure><img src="ski.jpg" width="825" height="1100" loading="lazy" alt=""></figure>
+      <figure><img src="glacier.jpg" width="825" height="1100" loading="lazy" alt=""></figure>
+      <figure><img src="icecave.jpg" width="825" height="1100" loading="lazy" alt=""></figure>
+    </div>
+  </section>
+  </div>
+</div>
+
+<footer>
+ <div class="wrap"><div class="inner">
+  <nav class="links" aria-label="Contact">
+    <a href="mailto:tomas.moravcik54@gmail.com">tomas.moravcik54@gmail.com</a>
+    <a href="https://www.linkedin.com/in/tom%C3%A1%C5%A1-morav%C4%8D%C3%ADk-28a118189/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.youtube.com/@tomoravcik" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.instagram.com/tomoravcik/" target="_blank" rel="noopener">Instagram</a>
+  </nav>
+  <small>© 2026 Tomáš Moravčík</small>
+ </div></div>
+</footer>
+
+<script>
+  // language switch
+  (function () {
+    var buttons = document.querySelectorAll('.lang button');
+    function set(lang) {
+      document.documentElement.lang = lang;
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.set === lang); });
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+    }
+    var saved; try { saved = localStorage.getItem('lang'); } catch (e) {}
+    var guess = /^(sk|cs)/i.test(navigator.language || '') ? 'sk' : 'en';
+    set(saved || guess);
+    buttons.forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+  })();
+</script>
 </body>
 </html>
