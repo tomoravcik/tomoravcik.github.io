@@ -171,11 +171,12 @@
     <div>
       <h1>Tomáš<br>Moravčík</h1>
       <p class="intro">
-        <span class="sk">Stavebný inžinier zo Žiliny. Plánujem stavby a strážim ich termíny.</span>
-        <span class="en">Civil engineer from Žilina. I plan construction projects and keep them on schedule.</span>
+        <span class="sk"><span class="age">25</span>-ročný stavebný inžinier zo Žiliny. Plánujem stavby a strážim ich termíny.</span>
+        <span class="en"><span class="age">25</span>-year-old civil engineer from Žilina. I plan construction projects and keep them on schedule.</span>
       </p>
       <nav class="links" aria-label="Links">
         <a href="https://www.linkedin.com/in/tom%C3%A1%C5%A1-morav%C4%8D%C3%ADk-28a118189/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://wa.me/421907700660" target="_blank" rel="noopener">WhatsApp</a>
         <a href="mailto:tomas.moravcik54@gmail.com">tomas.moravcik54@gmail.com</a>
       </nav>
     </div>
@@ -353,6 +354,7 @@
   <nav class="links" aria-label="Contact">
     <a href="mailto:tomas.moravcik54@gmail.com">tomas.moravcik54@gmail.com</a>
     <a href="https://www.linkedin.com/in/tom%C3%A1%C5%A1-morav%C4%8D%C3%ADk-28a118189/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://wa.me/421907700660" target="_blank" rel="noopener">WhatsApp</a>
     <a href="https://www.youtube.com/@tomoravcik" target="_blank" rel="noopener">YouTube</a>
     <a href="https://www.instagram.com/tomoravcik/" target="_blank" rel="noopener">Instagram</a>
   </nav>
@@ -361,6 +363,13 @@
 </footer>
 
 <script>
+  // age from date of birth, so it stays right every year
+  (function () {
+    var b = new Date(2001, 3, 5), n = new Date();
+    var age = n.getFullYear() - b.getFullYear() - ((n.getMonth() < 3 || (n.getMonth() === 3 && n.getDate() < 5)) ? 1 : 0);
+    document.querySelectorAll('.age').forEach(function (el) { el.textContent = age; });
+  })();
+
   // language switch
   (function () {
     var buttons = document.querySelectorAll('.lang button');
