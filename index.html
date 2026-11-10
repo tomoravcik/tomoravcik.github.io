@@ -213,13 +213,14 @@
   @media (max-width: 800px) {
     body { font-size: 16px; }
     .bar-in { height: auto; flex-wrap: wrap; padding: 10px 20px 0; gap: 4px 16px; }
-    .bar-name { opacity: 1; font-size: 16px; }
+    .bar-name { font-size: 16px; }
     .lang { margin-left: auto; }
     .bar-nav { order: 3; width: 100%; margin: 0; gap: 18px; overflow-x: auto; font-size: 14px; padding-bottom: 8px; scrollbar-width: none; }
     .hero { padding-top: 120px; }
     section[id] { scroll-margin-top: 100px; }
-    .hero { grid-template-columns: 1fr; gap: 32px; padding: 32px 0 60px; }
-    .hero figure { order: -1; width: 68%; max-width: 300px; }
+    .hero { grid-template-columns: 1fr; gap: 28px; padding: 132px 0 60px; }
+    .hero figure { order: -1; width: 46%; max-width: 210px; }
+    #heroName { position: static; z-index: auto; }
     .intro { font-size: 18px; }
     section { padding: 56px 0; }
     h2 { font-size: 26px; margin-bottom: 32px; }
@@ -237,15 +238,22 @@
     .six figure:last-child { grid-column: span 2; }
     .six figure:last-child img { aspect-ratio: 4 / 3; }
     .alongside > div:first-child { display: none; }
-    .skills { grid-template-columns: 1fr; gap: 28px; }
+    .skills { grid-template-columns: 1fr 1fr; gap: 28px 22px; }
+    .skills h3 { font-size: 13px; margin-bottom: 8px; }
+    .skills .big li { font-size: 15.5px; padding: 6px 0; }
+    .skills .big li i { font-size: 12.5px; margin-left: 4px; }
     .trio { gap: 6px; }
     .jobmap { width: 90px; margin: 0 0 0 auto; }
     .job .side .yrs { margin-left: 16px; }
     .study { grid-template-columns: 1fr; gap: 32px; }
     .study figure { width: 75%; max-width: 320px; }
-    .three { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .three figure:first-child { grid-column: 1 / -1; }
-    .three figure:first-child img { aspect-ratio: 4 / 3; }
+    /* swipeable galleries: first photo plus a peek of the next */
+    .photos, .photos.duo, .photos.trio, .three { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-right: -28px; padding-right: 0; }
+    .job > div, .others, .outside section { min-width: 0; }
+    .photos::-webkit-scrollbar, .three::-webkit-scrollbar { display: none; }
+    .photos figure, .three figure { flex: 0 0 auto; scroll-snap-align: start; }
+    .photos figure img, .three figure img, .photos .wide img, .trio img, .photos figure:not(.wide) img, .three img { width: auto; height: min(118vw, 460px); max-width: 78vw; aspect-ratio: auto; object-fit: cover; }
+    .photos figure:last-child, .three figure:last-child { margin-right: 28px; }
   }
 </style>
 </head>
@@ -558,7 +566,7 @@
       } else if (desktop) {
         hero.style.transform = ''; hero.style.opacity = 1; barName.style.opacity = '';
         barName.classList.toggle('on', y > geo.top + geo.height);
-      } else { hero.style.transform = ''; hero.style.opacity = 1; barName.style.opacity = ''; }
+      } else { hero.style.transform = ''; hero.style.opacity = 1; barName.style.opacity = ''; if (geo) barName.classList.toggle('on', y > geo.top + geo.height - bar.offsetHeight); }
       var cur = 0, mid = innerHeight * 0.45;
       secs.forEach(function (el, i) { if (i && el.getBoundingClientRect().top < mid) cur = i; });
       if (max - y < 4) cur = ids.length - 1;
