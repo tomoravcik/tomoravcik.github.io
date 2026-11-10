@@ -34,6 +34,10 @@
   a:hover { text-decoration-thickness: 2px; color: var(--navy); }
   html { scroll-behavior: smooth; }
   section[id] { scroll-margin-top: 72px; }
+  /* reel-like scrolling: settle on each block */
+  html { scroll-snap-type: y proximity; }
+  .hero, #experience, .job:not(.now), .others, #education, #tools, #outside, #contact { scroll-snap-align: start; scroll-margin-top: 72px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-snap-type: none; } }
   :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
 
@@ -218,6 +222,7 @@
     .bar-nav { order: 3; width: 100%; margin: 0; gap: 18px; overflow-x: auto; font-size: 14px; padding-bottom: 8px; scrollbar-width: none; }
     .hero { padding-top: 120px; }
     section[id] { scroll-margin-top: 100px; }
+    .hero, #experience, .job:not(.now), .others, #education, #tools, #outside, #contact { scroll-margin-top: 100px; }
     .hero { grid-template-columns: 1fr; gap: 28px; padding: 132px 0 60px; }
     .hero figure { order: -1; width: 46%; max-width: 210px; }
     #heroName { position: static; z-index: auto; }
