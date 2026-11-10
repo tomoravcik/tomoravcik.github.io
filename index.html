@@ -34,10 +34,6 @@
   a:hover { text-decoration-thickness: 2px; color: var(--navy); }
   html { scroll-behavior: smooth; }
   section[id] { scroll-margin-top: 72px; }
-  /* reel-like scrolling: settle on each block */
-  html { scroll-snap-type: y proximity; }
-  .hero, #experience, .job:not(.now), .others, #education, #tools, #outside, #contact { scroll-snap-align: start; scroll-margin-top: 72px; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-snap-type: none; } }
   :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
 
@@ -222,7 +218,6 @@
     .bar-nav { order: 3; width: 100%; margin: 0; gap: 18px; overflow-x: auto; font-size: 14px; padding-bottom: 8px; scrollbar-width: none; }
     .hero { padding-top: 120px; }
     section[id] { scroll-margin-top: 100px; }
-    .hero, #experience, .job:not(.now), .others, #education, #tools, #outside, #contact { scroll-margin-top: 100px; }
     .hero { grid-template-columns: 1fr; gap: 28px; padding: 132px 0 60px; }
     .hero figure { order: -1; width: 46%; max-width: 210px; }
     #heroName { position: static; z-index: auto; }
@@ -590,6 +585,56 @@
       var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
       els.forEach(function (el) { io.observe(el); });
     } else { els.forEach(function (el) { el.classList.add('in'); }); }
+  })();
+
+  // reel-like scrolling: when scrolling stops near the start of a block, glide onto it
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var sel = '.hero, #experience, .job:not(.now), .others, #education, #tools, #outside, #contact';
+    var targets = Array.prototype.slice.call(document.querySelectorAll(sel));
+    var bar = document.getElementById('bar');
+    var lastY = scrollY, dir = 0, timer = null, busy = false, touching = false, lastInput = 0;
+    function docTop(el) { var t = 0; while (el) { t += el.offsetTop; el = el.offsetParent; } return t; }
+    function stops() {
+      var off = bar.offsetHeight + 12, max = document.documentElement.scrollHeight - innerHeight;
+      return targets.map(function (el, i) { return i === 0 ? 0 : Math.min(max, Math.max(0, docTop(el) - off)); });
+    }
+    function settle() {
+      if (busy || touching) return;
+      var y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+      if (y >= max - 2) return;
+      var pts = stops(), reach = innerHeight * 0.32, best = null;
+      pts.forEach(function (p) {
+        var d = p - y;
+        if (Math.abs(d) < 3 || Math.abs(d) > reach) return;
+        if (dir > 0 && d < 0) return;  // never pull back against the scroll
+        if (dir < 0 && d > 0) return;
+        if (best === null || Math.abs(d) < Math.abs(best - y)) best = p;
+      });
+      if (best === null) return;
+      busy = true;
+      window.scrollTo({ top: best, behavior: 'smooth' });
+      var start = Date.now();
+      (function wait() {
+        if (Math.abs(scrollY - best) < 2 || Date.now() - start > 900 || Date.now() - lastInput < 60 && Date.now() - start > 150) { busy = false; lastY = scrollY; return; }
+        requestAnimationFrame(wait);
+      })();
+    }
+    function onScroll() {
+      var y = scrollY;
+      if (!busy && Math.abs(y - lastY) > 1) dir = y > lastY ? 1 : -1;
+      lastY = y;
+      if (busy) return;
+      clearTimeout(timer);
+      timer = setTimeout(settle, innerWidth > 800 ? 140 : 180);
+    }
+    function input() { lastInput = Date.now(); if (busy) busy = false; }
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('wheel', input, { passive: true });
+    var touchY = 0;
+    addEventListener('touchstart', function () { touching = true; touchY = scrollY; input(); clearTimeout(timer); }, { passive: true });
+    addEventListener('touchend', function () { touching = false; clearTimeout(timer); if (Math.abs(scrollY - touchY) > 4 || dir) timer = setTimeout(function () { if (Math.abs(scrollY - touchY) > 4) settle(); }, 220); }, { passive: true });
+    addEventListener('keydown', input);
   })();
 
   // language switch
