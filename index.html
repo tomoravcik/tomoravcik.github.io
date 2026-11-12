@@ -34,6 +34,13 @@
   a:hover { text-decoration-thickness: 2px; color: var(--navy); }
   html { scroll-behavior: smooth; }
   section[id] { scroll-margin-top: 72px; }
+  /* photo viewer */
+  .ph img { cursor: zoom-in; }
+  .lb { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 4vh 4vw; background: rgba(13, 26, 44, .94); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility 0s linear .25s; cursor: zoom-out; }
+  .lb.open { opacity: 1; visibility: visible; transition: opacity .25s ease; }
+  .lb img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; box-shadow: 0 20px 60px rgba(0,0,0,.35); transform: scale(.97); transition: transform .25s ease; }
+  .lb.open img { transform: none; }
+  .lb button { position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font: inherit; font-size: 22px; line-height: 44px; cursor: pointer; }
   :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
 
@@ -218,8 +225,11 @@
     .bar-nav { order: 3; width: 100%; margin: 0; gap: 18px; overflow-x: auto; font-size: 14px; padding-bottom: 8px; scrollbar-width: none; }
     .hero { padding-top: 120px; }
     section[id] { scroll-margin-top: 100px; }
-    .hero { grid-template-columns: 1fr; gap: 28px; padding: 132px 0 60px; }
-    .hero figure { order: -1; width: 46%; max-width: 210px; }
+    .hero { grid-template-columns: 1fr auto; column-gap: 18px; row-gap: 0; align-items: center; padding: 124px 0 60px; }
+    .hero > div { display: contents; }
+    .hero h1 { grid-column: 1; grid-row: 1; font-size: clamp(38px, 11.5vw, 52px); }
+    .hero figure { grid-column: 2; grid-row: 1; width: 30vw; max-width: 150px; }
+    .hero .intro, .hero .links, .hero .cv { grid-column: 1 / -1; justify-self: start; }
     #heroName { position: static; z-index: auto; }
     .intro { font-size: 18px; }
     section { padding: 56px 0; }
@@ -384,24 +394,24 @@
           <div class="yrs">2019 – 2023</div>
           <h4><span class="sk">Inštruktor lyžovania</span><span class="en">Ski instructor</span></h4>
           <div class="org"><span class="sk">RAW Vrátna</span><span class="en">RAW Vrátna</span></div>
-          <p><span class="sk">V horskom stredisku som učil deti aj dospelých lyžovať. Mám licenciu inštruktora lyžovania.</span><span class="en">Taught kids and adults to ski at a mountain resort. Licensed ski instructor.</span></p>
+          <p><span class="sk">V horskom stredisku som učil lyžovať deti aj dospelých.</span><span class="en">Taught children and adults to ski at a mountain resort.</span></p>
         </div>
         <div class="oth">
           <div class="yrs">2018 – 2023</div>
           <h4><span class="sk">Tréner atletiky</span><span class="en">Athletics coach</span></h4>
           <div class="org"><span class="sk">ŠK Juventa Žilina</span><span class="en">ŠK Juventa Žilina</span></div>
-          <p><span class="sk">Trénoval som deti v atletike a staral sa o ich celkovú kondíciu.</span><span class="en">Coached kids in track and field and worked on their general fitness.</span></p>
+          <p><span class="sk">Viedol som športovú prípravu a tréningy atletiky pre deti a mládež.</span><span class="en">Ran fitness and athletics training for children and young people.</span></p>
         </div>
         <div class="oth">
           <div class="yrs">2017 – 2024</div>
-          <h4><span class="sk">Vedúci letných táborov</span><span class="en">Summer camp leader</span></h4>
-          <p><span class="sk">Organizoval som letné tábory pre deti a chystal týždenný program: výlety, hry a zážitky.</span><span class="en">Organised summer camps for kids and planned the weekly programme: trips, games and experiences.</span></p>
+          <h4><span class="sk">Organizátor letných táborov</span><span class="en">Summer camp organiser</span></h4>
+          <p><span class="sk">Počas leta som organizoval denné aj pobytové tábory pre deti. Pripravoval som program a výlety a staral sa o chod celého tábora.</span><span class="en">Organised day and residential summer camps for children. I planned the programme and trips and looked after the running of the whole camp.</span></p>
         </div>
         <div class="oth">
           <div class="yrs">2019</div>
           <h4><span class="sk">Sprievodca</span><span class="en">Tourist guide</span></h4>
           <div class="org"><span class="sk">Hrad Strečno</span><span class="en">Strečno Castle</span></div>
-          <p><span class="sk">Jedno leto som sprevádzal turistov po hrade a rozprával im jeho históriu.</span><span class="en">Spent a summer guiding visitors around the castle and telling them its history.</span></p>
+          <p><span class="sk">Ako turistický sprievodca som sprevádzal návštevníkov hradu Strečno a približoval im jeho históriu.</span><span class="en">As a tourist guide, I showed visitors around Strečno Castle and told them about its history.</span></p>
         </div>
       </div>
     </div>
@@ -635,6 +645,25 @@
     addEventListener('touchstart', function () { touching = true; touchY = scrollY; input(); clearTimeout(timer); }, { passive: true });
     addEventListener('touchend', function () { touching = false; clearTimeout(timer); if (Math.abs(scrollY - touchY) > 4 || dir) timer = setTimeout(function () { if (Math.abs(scrollY - touchY) > 4) settle(); }, 220); }, { passive: true });
     addEventListener('keydown', input);
+  })();
+
+  // photo viewer: tap a photo to see it big
+  (function () {
+    var lb = document.createElement('div');
+    lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'Photo');
+    lb.innerHTML = '<img alt=""><button type="button" aria-label="Close">×</button>';
+    document.body.appendChild(lb);
+    var big = lb.querySelector('img'), last = null;
+    function close() { lb.classList.remove('open'); document.documentElement.style.overflow = ''; if (last) last.focus && last.focus(); }
+    document.querySelectorAll('.ph img').forEach(function (img) {
+      img.addEventListener('click', function () {
+        last = img; big.src = img.currentSrc || img.src; big.alt = img.alt || '';
+        lb.classList.add('open'); document.documentElement.style.overflow = 'hidden';
+        lb.querySelector('button').focus({ preventScroll: true });
+      });
+    });
+    lb.addEventListener('click', close);
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
   })();
 
   // language switch
